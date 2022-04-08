@@ -80,10 +80,6 @@ public class TernaryTrie<Value> {
 	
 	public static void main(String[] args) 
 	{
-		
-		char test = '.';
-		if (test <- 'a') System.out.println("success");
-		else System.out.println("ruhroh");
 		TernaryTrie<Integer> vancouverSystem = new TernaryTrie<Integer>();
 		try 
 		{
@@ -96,17 +92,15 @@ public class TernaryTrie<Value> {
 				stopDetails[2] = swap(stopDetails[2]);
 				stops.add(stopDetails);
 			}
-			System.out.println(Arrays.toString(stops.get(0)));
 			
 			for (int i = 0; i < stops.size() -1; i++)
 			{
 				vancouverSystem.put(stops.get(i)[2], i);
 			}
 			
-			//System.out.println(vancouverSystem.get("HWY 10 FS 175 ST WB"));
-			//System.out.println(vancouverSystem.get("HASTINGS ST FS HOLDOM AVE- WB"));
-			System.out.println(stops.get(1)[2]);
 			System.out.println(vancouverSystem.get("SHAUGHNESSY ST FS MCALLISTER AVE NB"));
+			int stopNumber = vancouverSystem.get("SHAUGHNESSY ST FS MCALLISTER AVE NB");
+			System.out.println(Arrays.toString(stops.get(stopNumber)));
 			
 			input.close();
 		} 
