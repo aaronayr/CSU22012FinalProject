@@ -1,24 +1,55 @@
 package stopSearch;
 
-public class Main {
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
 
-	public static void main(String[] args) {
+public class Main {
+	public static final int R = 256;
+	
+	public static class Node<Value>
+	{
+		public char c;
+		public Node<Value> left, mid, right;
+		public Value val;
+	}
+	
+	
+	public static void main(String[] args) 
+	{
 		String x = "FLAGSTOP example street";
 		swap(x);
+		
+		
+		try 
+		{
+			BufferedReader input = new BufferedReader(new FileReader("stops.txt"));
+			ArrayList<String[]> stops = new ArrayList<String[]>();
+			String currentStop = input.readLine(); // gets rid of header line
+			while ((currentStop = input.readLine()) != null) 
+			{
+				String[] stopDetails = currentStop.split(",");
+				swap(stopDetails[2]);
+				stops.add(stopDetails);
+			}
+			input.close();
+		} 
+		catch (IOException e) 
+		{
+			System.out.println("File not found");
+		}
+		
 	}
 	
 	public static void swap(String busStop)
 	{
-		int space = busStop.indexOf(" ");
-		
-		System.out.println(busStop);
 		if (busStop.indexOf("B ") == 1 || busStop.indexOf("FLAGSTOP") == 0) 
 		{
+			int space = busStop.indexOf(" ");
 			String prefix = busStop.substring(0, space);
 			String other = busStop.substring(space+1, busStop.length());
-			busStop = other + " " + prefix;
 		}
-		System.out.println(busStop);
 	}
 
 }
