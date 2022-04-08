@@ -14,9 +14,9 @@ public class Main {
 		System.out.println(busStop);
 		if (busStop.indexOf("B ") == 1 || busStop.indexOf("FLAGSTOP") == 0) 
 		{
-			String prefibusStop = busStop.substring(0, space);
+			String prefix = busStop.substring(0, space);
 			String other = busStop.substring(space+1, busStop.length());
-			busStop = other + " " + prefibusStop;
+			busStop = other + " " + prefix;
 		}
 		System.out.println(busStop);
 	}
