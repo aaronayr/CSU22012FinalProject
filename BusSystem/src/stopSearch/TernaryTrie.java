@@ -6,14 +6,16 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class TernaryTrie<Value> {
-	public Node<Value> root;
+public class TernaryTrie {
+	public Node root;
+	String[] headers;
+	ArrayList<String[]> stops;
 	
-	public static class Node<Value>
+	public static class Node
 	{
 		public char letter;
-		public Value val;
-		public Node<Value> less, equal, more;
+		public int val;
+		public Node less, equal, more;
 		
 	}
 	
@@ -29,17 +31,17 @@ public class TernaryTrie<Value> {
 		return busStop;
 	}
 	
-	public void put(String key, Value val)
+	public void put(String key, int val)
 	{
 		root = put(key, val, root, 0);
 	}
 	
-	public Node<Value> put(String key, Value val, Node<Value> current, int level)
+	public Node put(String key, int val, Node current, int level)
 	{
 		char nextLetter = key.charAt(level);
 		if (current == null)
 		{
-			current = new Node<Value>();
+			current = new Node();
 			current.letter = nextLetter;
 		}
 		
@@ -48,26 +50,16 @@ public class TernaryTrie<Value> {
 		else if (level < key.length() - 1) current.equal = put(key, val, current.equal, level + 1);
 		else current.val = val;
 		return current;
-//		else
-//		{
-//			if (nextLetter < current.letter) current.less = put(key, val, current.less, level);
-//			else if (nextLetter > current.letter) current.more = put(key, val, current.more, level);
-//			
-//		}
-//		
-//		if (level < key.length() - 1) current.equal = put(key, val, current.equal, level + 1);
-//		else current.val = val;
-//		return current;
 	}
 	
-	public Value get(String key)
+	public int get(String key)
 	{
-		Node<Value> node = get(key, root, 0);
-		if (node == null) return null;
+		Node node = get(key, root, 0);
+		if (node == null) return -1;
 		return node.val;
 	}
 	
-	public Node<Value> get(String key, Node<Value> current, int level)
+	public Node get(String key, Node current, int level)
 	{
 		if (current == null) return null;
 		char nextLetter = key.charAt(level);
@@ -78,29 +70,44 @@ public class TernaryTrie<Value> {
 		else return current;
 	}
 	
+	public void print(String stop)
+	{
+		int stopNumber = this.get(stop);
+		for (int i = 0; i < 9; i++)
+		{
+			if (this.stops.get(stopNumber)[i] != null)
+			{
+				System.out.println(this.headers[i] + ": " + this.stops.get(stopNumber)[i]);
+			}
+		}
+		
+		
+	}
+	
 	public static void main(String[] args) 
 	{
-		TernaryTrie<Integer> vancouverSystem = new TernaryTrie<Integer>();
+		TernaryTrie Bus = new TernaryTrie();
 		try 
 		{
 			BufferedReader input = new BufferedReader(new FileReader("stops.txt"));
-			ArrayList<String[]> stops = new ArrayList<String[]>();
-			String currentStop = input.readLine(); // gets rid of header line
+			Bus.stops = new ArrayList<String[]>();
+			Bus.headers = input.readLine().split(",");
+			Bus.headers[0] = Bus.headers[0].substring(3);
+			
+			String currentStop = "";
 			while ((currentStop = input.readLine()) != null) 
 			{
 				String[] stopDetails = currentStop.split(",");
 				stopDetails[2] = swap(stopDetails[2]);
-				stops.add(stopDetails);
+				Bus.stops.add(stopDetails);
 			}
 			
-			for (int i = 0; i < stops.size() -1; i++)
+			for (int i = 0; i < Bus.stops.size() -1; i++)
 			{
-				vancouverSystem.put(stops.get(i)[2], i);
+				Bus.put(Bus.stops.get(i)[2], i);
 			}
 			
-			System.out.println(vancouverSystem.get("SHAUGHNESSY ST FS MCALLISTER AVE NB"));
-			int stopNumber = vancouverSystem.get("SHAUGHNESSY ST FS MCALLISTER AVE NB");
-			System.out.println(Arrays.toString(stops.get(stopNumber)));
+			Bus.print("SHAUGHNESSY ST FS MCALLISTER AVE NB");
 			
 			input.close();
 		} 
