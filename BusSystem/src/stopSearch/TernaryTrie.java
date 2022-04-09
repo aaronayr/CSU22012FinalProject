@@ -5,11 +5,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 
 public class TernaryTrie {
 	public Node root;
-	String[] headers;
-	ArrayList<String[]> stops;
+	public String[] headers;
+	public ArrayList<String[]> allStops;
+	public static ArrayList<String> validStops;
 	
 	public static class Node
 	{
@@ -52,62 +54,132 @@ public class TernaryTrie {
 		return current;
 	}
 	
-	public int get(String key)
+	public int val(String key)
 	{
-		Node node = get(key, root, 0);
+		Node node = val(key, root, 0);
 		if (node == null) return -1;
 		return node.val;
 	}
 	
-	public Node get(String key, Node current, int level)
+	public Node val(String key, Node current, int level)
 	{
 		if (current == null) return null;
 		char nextLetter = key.charAt(level);
 		
-		if (nextLetter < current.letter) return get(key, current.less, level);
-		else if (nextLetter > current.letter) return get(key, current.more, level);
-		else if (level < key.length() - 1) return get(key, current.equal, level + 1);
+		if (nextLetter < current.letter) return val(key, current.less, level);
+		else if (nextLetter > current.letter) return val(key, current.more, level);
+		else if (level < key.length() - 1) return val(key, current.equal, level + 1);
 		else return current;
 	}
 	
-	public void print(String stop)
+	public void allVal(String key)
 	{
-		int stopNumber = this.get(stop);
-		for (int i = 0; i < 9; i++)
+		if (key.isBlank())
 		{
-			if (this.stops.get(stopNumber)[i] != null)
+			for (String[] stop : this.allStops)
 			{
-				System.out.println(this.headers[i] + ": " + this.stops.get(stopNumber)[i]);
+				validStops.add(stop[2]);
 			}
+			return;
+		}
+		allVal(key, root, 0);
+	}
+	
+	public void allVal(String key, Node current, int level)
+	{
+		if (current == null) return;
+		char nextLetter = key.charAt(level);
+		
+		if (nextLetter < current.letter) allVal(key, current.less, level);
+		else if (nextLetter > current.letter) allVal(key, current.more, level);
+		else if (level < key.length() - 1) allVal(key, current.equal, level + 1);
+		else 
+		{
+			addNode(current);
+			allVal(current.equal, level + 1);
+		}
+	}
+	
+	public void allVal(Node current, int level)
+	{
+		if (current ==  null) return;
+		addNode(current);
+		if (current.less != null) allVal(current.less, level);
+		if(current.more != null) allVal(current.more, level);
+		if(current.equal != null) allVal(current.equal, level + 1);
+
+		else return;
+		
+	}
+	
+	public void addNode(Node n)
+	{
+		if (n.val != 0) 
+		{
+			int ValidStopval = n.val - 1;
+			String ValidStopName = this.allStops.get(ValidStopval)[2];
+			validStops.add(ValidStopName);
+		}
+	}
+	
+	public void print()
+	{
+		ArrayList<String> stops = validStops;
+		if (stops.size() < 100)
+		{
+			Collections.sort(stops);
 		}
 		
+		if (!stops.isEmpty())
+		{
+			for (String stop : stops)
+			{
+				int stopNumber = this.val(stop) - 1;
+				if (stopNumber == -2) stopNumber = 8756;
+				for (int i = 0; i < 9; i++)
+				{
+					if (!this.allStops.get(stopNumber)[i].equals(" "))
+					{
+						System.out.println(this.headers[i] + ": " + this.allStops.get(stopNumber)[i]);
+					}
+				}
+				System.out.println("");
+				
+			}
+		}
+		else System.out.println("No valid such stops exist");
 		
 	}
 	
 	public static void main(String[] args) 
 	{
-		TernaryTrie Bus = new TernaryTrie();
+		TernaryTrie bus = new TernaryTrie();
 		try 
 		{
 			BufferedReader input = new BufferedReader(new FileReader("stops.txt"));
-			Bus.stops = new ArrayList<String[]>();
-			Bus.headers = input.readLine().split(",");
-			Bus.headers[0] = Bus.headers[0].substring(3);
+			bus.headers = input.readLine().split(",");
+			bus.headers[0] = bus.headers[0].substring(3);
+			bus.allStops = new ArrayList<String[]>();
+			validStops = new ArrayList<String>();
+			
 			
 			String currentStop = "";
 			while ((currentStop = input.readLine()) != null) 
 			{
 				String[] stopDetails = currentStop.split(",");
 				stopDetails[2] = swap(stopDetails[2]);
-				Bus.stops.add(stopDetails);
+				bus.allStops.add(stopDetails);
 			}
 			
-			for (int i = 0; i < Bus.stops.size() -1; i++)
+			System.out.println(bus.allStops.get(8756)[2]);
+			System.out.println(bus.val("WATERFRONT STATION ALL"));
+			
+			for (int i = 0; i < bus.allStops.size() -1; i++)
 			{
-				Bus.put(Bus.stops.get(i)[2], i);
+				bus.put(bus.allStops.get(i)[2], i+1);
 			}
-			
-			Bus.print("SHAUGHNESSY ST FS MCALLISTER AVE NB");
+			bus.allVal("");
+			bus.print();
 			
 			input.close();
 		} 
