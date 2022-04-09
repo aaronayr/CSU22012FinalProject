@@ -136,7 +136,7 @@ public class TernaryTrie {
 				if (stopNumber == -2) stopNumber = 8756;
 				for (int i = 0; i < 9; i++)
 				{
-					if (!this.allStops.get(stopNumber)[i].equals(" "))
+					if (!this.allStops.get(stopNumber)[i].isBlank())
 					{
 						System.out.println(this.headers[i] + ": " + this.allStops.get(stopNumber)[i]);
 					}
