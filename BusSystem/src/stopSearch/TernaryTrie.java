@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class TernaryTrie {
@@ -18,7 +17,6 @@ public class TernaryTrie {
 		public char letter;
 		public int val;
 		public Node less, equal, more;
-		
 	}
 	
 	public static String swap(String busStop)
@@ -171,14 +169,11 @@ public class TernaryTrie {
 				bus.allStops.add(stopDetails);
 			}
 			
-			System.out.println(bus.allStops.get(8756)[2]);
-			System.out.println(bus.val("WATERFRONT STATION ALL"));
-			
 			for (int i = 0; i < bus.allStops.size() -1; i++)
 			{
 				bus.put(bus.allStops.get(i)[2], i+1);
 			}
-			bus.allVal("");
+			bus.allVal("JOHNSON");
 			bus.print();
 			
 			input.close();
