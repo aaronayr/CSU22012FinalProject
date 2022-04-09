@@ -11,13 +11,6 @@ public class TripLibrary {
 	public String[] headers;
 	public ArrayList<String[]> allTrips;
 	public ArrayList<trip> [][][] allTimes;
-	
-//	public class trip
-//	{
-//		int hour;
-//		int minute;
-//		int second;
-//	}
 
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
@@ -34,7 +27,7 @@ public class TripLibrary {
 				}
 			}
 		}
-		
+
 		try 
 		{
 			BufferedReader input = new BufferedReader(new FileReader("stop_times.txt"));
@@ -44,9 +37,14 @@ public class TripLibrary {
 			while ((currentTime = input.readLine()) != null)
 			{
 				String[] timeDetails = currentTime.split(",");
-				timeDetails[1] = timeDetails[1].substring(1, timeDetails[1].length());
-				timeDetails[2] = timeDetails[2].substring(1, timeDetails[2].length());
-				timetable.allTrips.add(timeDetails);
+				if (timeDetails[1].substring(0,1).equals(" ")) timeDetails[1] = timeDetails[1].substring(1, timeDetails[1].length());
+				if (timeDetails[2].substring(0,1).equals(" ")) timeDetails[2] = timeDetails[2].substring(1, timeDetails[2].length());
+				
+				String[] potentialTime = timeDetails[1].split(":");
+				if (Integer.parseInt(potentialTime[0]) < 24)
+				{
+					timetable.allTrips.add(timeDetails);
+				}
 			}
 			
 			for (int i = 0; i < timetable.allTrips.size(); i++)
@@ -56,14 +54,21 @@ public class TripLibrary {
 				int hour = currentTrip.hours;
 				int minute = currentTrip.minutes;
 				int second = currentTrip.seconds;
+				if (hour == 5 && minute == 25 && second == 0) 
+				{
+					System.out.println(currentTrip.index);
+					System.out.println(hour + ":" + minute + ":"+ second);
+					System.out.println(timetable.allTrips.get(currentTrip.index)[0]);
+					System.out.println("");
+				}
 				timetable.allTimes[hour][minute][second].add(currentTrip);
 				
 			}
 			
 			System.out.println(Arrays.toString(timetable.headers));
 			System.out.println(Arrays.toString(timetable.allTrips.get(0)));
-			//String[] requestedTime = new String[3];
 			
+			System.out.println("success");
 			
 			input.close();
 		} 
