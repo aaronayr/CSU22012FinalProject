@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DirectedGraph {
 	public int numStops;
@@ -34,6 +35,21 @@ public class DirectedGraph {
 				currentTrip = Integer.parseInt(edgeDetails[0]);
 				prevId = Integer.parseInt(edgeDetails[3]);
 			}
+			input.close();
+			
+			BufferedReader input2 = new BufferedReader(new FileReader("transfers.txt"));
+			
+			input2.readLine();
+			while ((currentLine = input2.readLine()) != null)
+			{
+				String[] edgeDetails = currentLine.split(",");
+				boolean standardTransfer = edgeDetails[2].equals("0");
+				double cost = 2;
+				if (!standardTransfer) cost = (double) Integer.parseInt(edgeDetails[3]) / 100;
+				DirectedEdge currentEdge = new DirectedEdge(Integer.parseInt(edgeDetails[0]), Integer.parseInt(edgeDetails[1]), cost);
+				Network.edgeList.add(currentEdge);
+			}
+			input2.close();
 			
 			for (int i = 0; i < 100; i++)
 			{
@@ -46,7 +62,7 @@ public class DirectedGraph {
 				}
 			}
 			
-			input.close();
+			
 		}
 		catch (IOException e) 
 		{
