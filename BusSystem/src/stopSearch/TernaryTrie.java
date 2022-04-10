@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 public class TernaryTrie {
 	public Node root;
@@ -144,25 +145,30 @@ public class TernaryTrie {
 				System.out.println("");
 				
 			}
+			System.out.println(stops.size() + " stops were found, they are listed above");
 		}
 		else System.out.println("No valid such stops exist");
-		
+		System.out.println("");
 	}
 	
-	public static void main(String[] args) 
+	public static void q2(Scanner input)
 	{
+		System.out.println("What stop are you looking for?");
 		TernaryTrie bus = new TernaryTrie();
+		String inputtedName = input.nextLine();
+		inputtedName = inputtedName.toUpperCase();
+		
 		try 
 		{
-			BufferedReader input = new BufferedReader(new FileReader("stops.txt"));
-			bus.headers = input.readLine().split(",");
+			BufferedReader stopsFile = new BufferedReader(new FileReader("stops.txt"));
+			bus.headers = stopsFile.readLine().split(",");
 			bus.headers[0] = bus.headers[0].substring(3);
 			bus.allStops = new ArrayList<String[]>();
 			validStops = new ArrayList<String>();
 			
 			
 			String currentStop = "";
-			while ((currentStop = input.readLine()) != null) 
+			while ((currentStop = stopsFile.readLine()) != null) 
 			{
 				String[] stopDetails = currentStop.split(",");
 				stopDetails[2] = swap(stopDetails[2]);
@@ -173,10 +179,10 @@ public class TernaryTrie {
 			{
 				bus.put(bus.allStops.get(i)[2], i+1);
 			}
-			bus.allVal("JOHNSON");
+			bus.allVal(inputtedName);
 			bus.print();
 			
-			input.close();
+			stopsFile.close();
 		} 
 		catch (IOException e) 
 		{

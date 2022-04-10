@@ -9,7 +9,6 @@ public class Dijkstra {
 	public int source;
 	public int destination;
 	public DirectedGraph City;
-//	public double[] costForStop;
 	public DirectedEdge[] edgeTo;
 	public ArrayList<stop> stopQueue;
 	
@@ -17,13 +16,7 @@ public class Dijkstra {
 	public Dijkstra(DirectedGraph City)
 	{
 		this.City = City;
-//		costForStop = new double[DirectedGraph.stops.size()];
 		edgeTo = new DirectedEdge[DirectedGraph.stops.size()];
-		
-//		for (int currentStop = 0; currentStop < costForStop.length; currentStop++)
-//		{
-//			costForStop[currentStop] = -1;
-//		}
 	}
 	
 	public void setSource(stop source)
@@ -47,14 +40,6 @@ public class Dijkstra {
 					edgeTo[destination.index] = segment;
 					if (!stopQueue.contains(destination)) stopQueue.add(destination);
 				}
-//				int destination = DirectedGraph.findStop(segment.destination).index;
-//				int stop = DirectedGraph.findStop(segment.stop).index;
-//				if (costForStop[destination] > costForStop[stop] + segment.cost)
-//				{
-//					costForStop[destination] = costForStop[stop] + segment.cost;
-//					edgeTo[destination] = segment;
-//					if (!stopQueue.contains(DirectedGraph.findStop(segment.destination))) stopQueue.add(DirectedGraph.findStop(destination));
-//				}
 			}
 		}
 	}
@@ -91,17 +76,6 @@ public class Dijkstra {
 				}
 			}
 		}
-		
-//		double[] costForStop = new double[queue.size()];
-//		for (int i = 0; i < queue.size(); i++)
-//		{
-//			costForStop[i] = DirectedGraph.stops.get(queue.get(i));
-//		}
-//		Arrays.sort(costForStop);
-//		for (int i = 0; i < queue.size(); i++)
-//		{
-//			queue.set(i, queue.indexOf(DirectedGraph.stops.indexOf(costForStop[i])));
-//		}
 	}
 	
 	public static stop findStop(int currentStopNumber)
@@ -129,23 +103,17 @@ public class Dijkstra {
 		return answer;
 	}
 	
-	public static void q1() {
+	public static void q1(Scanner input) {
 		
-		Scanner input = new Scanner(System.in);
 		System.out.println("Where are you coming from?");
 		String startingPoint = input.nextLine();
 		System.out.println("And where are you going to?");
 		DirectedGraph Vancouver = new DirectedGraph();
 		Vancouver.generateGraph();
 		String endPoint = input.nextLine();
-		input.close();
 		int sourceId = stopExists(startingPoint);
 		int destinationId = stopExists(endPoint);
 		System.out.println("");
-//		int source = 646;
-//		int indexOfSource = Vancouver.stops.indexOf(source);
-//		int destination = 378;
-//		int indexOfDestination= Vancouver.stops.indexOf(destination);
 		if (sourceId != -1 && destinationId != -1)
 		{
 			Dijkstra path = new Dijkstra(Vancouver);
@@ -177,25 +145,11 @@ public class Dijkstra {
 				System.out.println(" ")
 				;
 				System.out.println("Cost of Trip: " + destination.cost);
-				System.out.println("success");
 			}
-			else System.out.println("Invalid journey");
+			else System.out.println("Sorry, the stops you have inputted are not valid");
 		}
-		else System.out.println("Invalid journey");
-		
-		
-//		int priorStopNumber = path.edgeTo[d.index].stop;
-//		stop priorStop = findStop(priorStopNumber);
-//		while (!priorStop.equals(sourceStop))
-//		{
-//			System.out.println(priorStopNumber);
-//			System.out.println("");
-//			d = priorStop;
-//			priorStopNumber = path.edgeTo[d.index].stop;
-//			priorStop = findStop(priorStopNumber);
-//		}
-		
-		
+		else System.out.println("Sorry, the stops you have inputted are not valid");
+		System.out.println("");
 	}
 
 }

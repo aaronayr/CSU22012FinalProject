@@ -50,7 +50,6 @@ public class DirectedGraph {
 				if (Integer.parseInt(edgeDetails[0]) == currentTrip)
 				{
 					DirectedEdge currentEdge = new DirectedEdge(prevId, Integer.parseInt(edgeDetails[3]), 1);
-//					int stop = stops.indexOf(prevId);
 					stop currentStop = findStop(prevId);
 					boolean newEdge = true;
 					for (DirectedEdge c : edgeList[currentStop.index])
@@ -75,19 +74,10 @@ public class DirectedGraph {
 				if (!standardTransfer) cost = (double) Integer.parseInt(edgeDetails[3]) / 100;
 				
 				DirectedEdge currentEdge = new DirectedEdge(Integer.parseInt(edgeDetails[0]), Integer.parseInt(edgeDetails[1]), cost);
-//				int stop = stops.indexOf(Integer.parseInt(edgeDetails[0]));
 				stop currentStop = findStop(Integer.parseInt(edgeDetails[0]));
 				edgeList[currentStop.index].add(currentEdge);
 			}
 			transfersFile.close();
-			
-//			for (DirectedEdge e : Network.edgeList[0])
-//			{
-//				System.out.println(e.stop);
-//				System.out.println(e.destination);
-//				System.out.println(e.cost);
-//				System.out.println("");
-//			}
 			
 		}
 		catch (IOException e) 
