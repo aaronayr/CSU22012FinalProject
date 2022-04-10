@@ -10,7 +10,7 @@ public class TripLibrary {
 
 	public String[] headers;
 	public ArrayList<String[]> allTrips;
-	public ArrayList<trip> [][][] allTimes;
+	public ArrayList<trip>[][][] allTimes;
 
 	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
