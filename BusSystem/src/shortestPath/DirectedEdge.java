@@ -4,6 +4,7 @@ public class DirectedEdge {
 	public int stop;
 	public int destination;
 	public double cost;
+	public String name;
 	
 	public DirectedEdge(int stop, int destination, double cost)
 	{

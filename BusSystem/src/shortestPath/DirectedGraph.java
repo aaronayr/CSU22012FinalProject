@@ -26,7 +26,8 @@ public class DirectedGraph {
 			while ((currentLine = stopsFile.readLine()) != null) 
 			{
 				String[] stopDetails = currentLine.split(",");
-				stop currentStop = new stop(index, Integer.parseInt(stopDetails[0]));
+				stopDetails[2] = swap(stopDetails[2]);
+				stop currentStop = new stop(index, Integer.parseInt(stopDetails[0]), stopDetails[2]);
 				stops.add(currentStop);
 				index++;
 			}
@@ -91,9 +92,21 @@ public class DirectedGraph {
 		}
 	}
 	
+	public static String swap(String busStop)
+	{
+		if (busStop.indexOf("B ") == 1 || busStop.indexOf("FLAGSTOP") == 0) 
+		{
+			int space = busStop.indexOf(" ");
+			String prefix = busStop.substring(0, space);
+			String other = busStop.substring(space+1, busStop.length());
+			busStop = other + " " + prefix;
+		}
+		return busStop;
+	}
+	
 	public static stop findStop(int currentstopNumber)
 	{
-		stop answer = new stop(-1, -1);
+		stop answer = new stop(-1, -1, "");
 		for (stop c : stops)
 		{
 			if (c.stopNumber == currentstopNumber) 

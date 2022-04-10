@@ -1,7 +1,6 @@
 package shortestPath;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 
 public class Dijkstra {
@@ -106,7 +105,7 @@ public class Dijkstra {
 	
 	public static stop findStop(int currentStopNumber)
 	{
-		stop answer = new stop(-1, -1);
+		stop answer = new stop(-1, -1, "");
 		for (stop c : DirectedGraph.stops)
 		{
 			if (c.stopNumber == currentStopNumber) 
@@ -126,19 +125,52 @@ public class Dijkstra {
 //		int destination = 378;
 //		int indexOfDestination= Vancouver.stops.indexOf(destination);
 		Dijkstra path = new Dijkstra(Vancouver);
-		int source = 646;
-		int destination = 378;
+		int sourceId = 646;
+		stop sourceStop = findStop(sourceId);
+		int destinationId= 1856;
 		path.stopQueue = new ArrayList<stop>();
-		path.setSource(findStop(source));
+		path.setSource(sourceStop);
 		path.relaxVertices();
 		
-		stop d = findStop(destination);
-		System.out.println(d.index);
-		System.out.println(d.stopNumber);
-		System.out.println(d.cost);
-		System.out.println("");
+		stop destination = findStop(destinationId);
+		stop previousStop = destination;
 		
-		System.out.println("success");
+		if (!sourceStop.equals(previousStop))
+		{
+			System.out.println("Destination: " + previousStop.name);
+			System.out.println("");
+			
+			int priorStopNumber = path.edgeTo[previousStop.index].stop;
+			stop priorStop = findStop(priorStopNumber);
+			while (!priorStop.equals(sourceStop))
+			{
+				System.out.println("--" + priorStop.name);
+				System.out.println("");
+				previousStop = priorStop;
+				priorStopNumber = path.edgeTo[previousStop.index].stop;
+				priorStop = findStop(priorStopNumber);
+			}
+			
+			System.out.println("Starting Point: " + sourceStop.name);
+			System.out.println(" ")
+			;
+			System.out.println("Cost of Trip: " + destination.cost);
+			System.out.println("success");
+		}
+		else System.out.println("Invalid journey");
+		
+//		int priorStopNumber = path.edgeTo[d.index].stop;
+//		stop priorStop = findStop(priorStopNumber);
+//		while (!priorStop.equals(sourceStop))
+//		{
+//			System.out.println(priorStopNumber);
+//			System.out.println("");
+//			d = priorStop;
+//			priorStopNumber = path.edgeTo[d.index].stop;
+//			priorStop = findStop(priorStopNumber);
+//		}
+		
+		
 	}
 
 }
