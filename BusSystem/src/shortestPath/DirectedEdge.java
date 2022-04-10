@@ -12,4 +12,12 @@ public class DirectedEdge {
 		this.destination = destination;
 		this.cost = cost;
 	}
+	
+	public boolean copies(DirectedEdge duplicate)
+	{
+		return (this.stop ==duplicate.stop && this.destination == duplicate.destination);
+	}
+	
+	
+	
 }

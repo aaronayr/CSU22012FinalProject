@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class DirectedGraph {
 	public static int numStops = 0;
@@ -53,7 +52,12 @@ public class DirectedGraph {
 					DirectedEdge currentEdge = new DirectedEdge(prevId, Integer.parseInt(edgeDetails[3]), 1);
 //					int stop = stops.indexOf(prevId);
 					stop currentStop = findStop(prevId);
-					edgeList[currentStop.index].add(currentEdge);
+					boolean newEdge = true;
+					for (DirectedEdge c : edgeList[currentStop.index])
+					{
+						if (currentEdge.copies(c)) newEdge = false;
+					}
+					if (newEdge) edgeList[currentStop.index].add(currentEdge);
 				}
 				currentTrip = Integer.parseInt(edgeDetails[0]);
 				prevId = Integer.parseInt(edgeDetails[3]);

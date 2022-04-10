@@ -1,10 +1,13 @@
 package frontInterface;
 
+import shortestPath.*;
+import stopSearch.*;
+import tripSearch.*;
+
 public class Main {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		Dijkstra.q1();
 	}
 
 }

@@ -2,6 +2,7 @@ package shortestPath;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 
 public class Dijkstra {
 	public String[] headers = {"Stop", "Cost", "Total Cost"};
@@ -117,47 +118,71 @@ public class Dijkstra {
 		return answer;
 	}
 	
-	public static void main(String[] args) {
+	public static int stopExists(String potentialStop)
+	{
+		int answer = -1;
+		potentialStop = potentialStop.toUpperCase();
+		for (stop s: DirectedGraph.stops) 
+		{
+			if (s.name.equals(potentialStop)) answer = s.stopNumber;
+		}
+		return answer;
+	}
+	
+	public static void q1() {
+		
+		Scanner input = new Scanner(System.in);
+		System.out.println("Where are you coming from?");
+		String startingPoint = input.nextLine();
+		System.out.println("And where are you going to?");
 		DirectedGraph Vancouver = new DirectedGraph();
 		Vancouver.generateGraph();
+		String endPoint = input.nextLine();
+		input.close();
+		int sourceId = stopExists(startingPoint);
+		int destinationId = stopExists(endPoint);
+		System.out.println("");
 //		int source = 646;
 //		int indexOfSource = Vancouver.stops.indexOf(source);
 //		int destination = 378;
 //		int indexOfDestination= Vancouver.stops.indexOf(destination);
-		Dijkstra path = new Dijkstra(Vancouver);
-		int sourceId = 646;
-		stop sourceStop = findStop(sourceId);
-		int destinationId= 1856;
-		path.stopQueue = new ArrayList<stop>();
-		path.setSource(sourceStop);
-		path.relaxVertices();
-		
-		stop destination = findStop(destinationId);
-		stop previousStop = destination;
-		
-		if (!sourceStop.equals(previousStop))
+		if (sourceId != -1 && destinationId != -1)
 		{
-			System.out.println("Destination: " + previousStop.name);
-			System.out.println("");
+			Dijkstra path = new Dijkstra(Vancouver);
+			stop sourceStop = findStop(sourceId);
+			path.stopQueue = new ArrayList<stop>();
+			path.setSource(sourceStop);
+			path.relaxVertices();
 			
-			int priorStopNumber = path.edgeTo[previousStop.index].stop;
-			stop priorStop = findStop(priorStopNumber);
-			while (!priorStop.equals(sourceStop))
+			stop destination = findStop(destinationId);
+			stop previousStop = destination;
+			
+			if (!sourceStop.equals(previousStop))
 			{
-				System.out.println("--" + priorStop.name);
+				System.out.println("Destination: " + previousStop.name);
 				System.out.println("");
-				previousStop = priorStop;
-				priorStopNumber = path.edgeTo[previousStop.index].stop;
-				priorStop = findStop(priorStopNumber);
+				
+				int priorStopNumber = path.edgeTo[previousStop.index].stop;
+				stop priorStop = findStop(priorStopNumber);
+				while (!priorStop.equals(sourceStop))
+				{
+					System.out.println("--" + priorStop.name);
+					System.out.println("");
+					previousStop = priorStop;
+					priorStopNumber = path.edgeTo[previousStop.index].stop;
+					priorStop = findStop(priorStopNumber);
+				}
+				
+				System.out.println("Starting Point: " + sourceStop.name);
+				System.out.println(" ")
+				;
+				System.out.println("Cost of Trip: " + destination.cost);
+				System.out.println("success");
 			}
-			
-			System.out.println("Starting Point: " + sourceStop.name);
-			System.out.println(" ")
-			;
-			System.out.println("Cost of Trip: " + destination.cost);
-			System.out.println("success");
+			else System.out.println("Invalid journey");
 		}
 		else System.out.println("Invalid journey");
+		
 		
 //		int priorStopNumber = path.edgeTo[d.index].stop;
 //		stop priorStop = findStop(priorStopNumber);
